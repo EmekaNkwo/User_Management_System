@@ -4,6 +4,8 @@
 
 This app is a user management app that allows you to create, update, and delete users. It is built using Next.js, React, and TypeScript, utilizing Redux for state management and Ant Design for UI components.
 
+## Live Demo - https://user-management-system-inky-six.vercel.app/
+
 ## Technologies
 
 - Next.js
