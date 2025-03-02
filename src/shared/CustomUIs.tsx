@@ -1,4 +1,8 @@
+import { Image, Upload } from "antd";
+import { useState } from "react";
 import {
+  Control,
+  Controller,
   FieldError,
   FieldValues,
   Path,
@@ -9,7 +13,7 @@ interface FormInputProps<T extends FieldValues> {
   label?: string;
   name: Path<T>;
   register: UseFormRegister<T>;
-  type?: "text" | "email" | "number" | "date";
+  type?: "text" | "email" | "number" | "date" | "file";
   errors?: FieldError;
   placeholder?: string;
   className?: string;
@@ -35,6 +39,98 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   disabled?: boolean;
 }
+
+interface ImageUploadProps {
+  name: string;
+  control: Control<any>;
+  setValue: (name: string, value: string | null) => void;
+}
+
+export const ImageUpload: React.FC<ImageUploadProps> = ({
+  name,
+  control,
+  setValue,
+}) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleUpload = (
+    file: File,
+    onChange: (value: string | null) => void
+  ) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = (reader.result as string).split(",")[1];
+      setImagePreview(reader.result as string);
+      onChange(base64String);
+    };
+    reader.readAsDataURL(file);
+    return false; // Prevent default upload behavior
+  };
+
+  const handleRemove = (onChange: (value: null) => void) => {
+    setImagePreview(null);
+    onChange(null);
+    setValue(name, null);
+  };
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={null}
+      rules={{ required: "Image is required" }}
+      render={({ field }) => (
+        <>
+          {imagePreview || field.value ? (
+            <div className="flex items-center gap-4 mt-2">
+              <Image
+                preview={false}
+                src={
+                  imagePreview
+                    ? imagePreview
+                    : `data:image/jpeg;base64,${field.value}`
+                }
+                alt="Preview"
+                width={100}
+                height={100}
+                className="rounded-full object-cover border"
+              />
+              <div className="flex flex-col gap-2">
+                <Upload
+                  accept="image/*"
+                  showUploadList={false}
+                  beforeUpload={(file) => handleUpload(file, field.onChange)}
+                >
+                  <span className="cursor-pointer p-3 rounded-sm bg-[#F3F5F6] ">
+                    Change Image
+                  </span>
+                </Upload>
+                {field.value && imagePreview && (
+                  <span
+                    className="cursor-pointer text-red-600 mt-2"
+                    onClick={() => handleRemove(field.onChange)}
+                  >
+                    Remove
+                  </span>
+                )}
+              </div>
+            </div>
+          ) : (
+            <Upload
+              accept="image/*"
+              showUploadList={false}
+              beforeUpload={(file) => handleUpload(file, field.onChange)}
+            >
+              <span className="cursor-pointer p-3 rounded-sm bg-[#F3F5F6] ">
+                Upload Image
+              </span>
+            </Upload>
+          )}
+        </>
+      )}
+    />
+  );
+};
 
 export function FormInput<T extends FieldValues>({
   label,
@@ -67,7 +163,6 @@ export function FormInput<T extends FieldValues>({
     </div>
   );
 }
-
 export function FormSelect<T extends FieldValues>({
   label,
   name,

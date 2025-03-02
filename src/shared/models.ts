@@ -27,5 +27,5 @@ export interface UserProfile {
   contact: UserContact;
   address: UserAddress;
   academics: UserAcademics;
-  message?: string;
+  profilePhoto: string;
 }

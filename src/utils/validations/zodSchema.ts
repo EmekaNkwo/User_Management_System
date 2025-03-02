@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const userInfoSchema = z.object({
+  profilePhoto: z.string().min(2, "Profile photo is required"),
   firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),
   dob: z.string().refine((val) => !isNaN(Date.parse(val)), {

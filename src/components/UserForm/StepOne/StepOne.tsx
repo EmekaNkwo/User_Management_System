@@ -1,12 +1,17 @@
 import React from "react";
-import { CustomButton, FormInput, FormSelect } from "@/shared/CustomUIs";
+import {
+  CustomButton,
+  FormInput,
+  FormSelect,
+  ImageUpload,
+} from "@/shared/CustomUIs";
 import { useStepOne } from "./useStepOne";
 import { UserInfoFormData } from "@/utils/validations/zodSchema";
 import { useDispatch } from "react-redux";
 import { setStepState } from "@/redux/slices/stepSlice";
 
 const StepOne = ({ nextStep }: { nextStep: () => void }) => {
-  const { register, handleSubmit, errors } = useStepOne();
+  const { register, handleSubmit, errors, control, setValue } = useStepOne();
   const dispatch = useDispatch();
   const handleSubmitForm = (data: UserInfoFormData) => {
     dispatch(setStepState({ stepOne: data }));
@@ -15,8 +20,15 @@ const StepOne = ({ nextStep }: { nextStep: () => void }) => {
   return (
     <form
       onSubmit={handleSubmit(handleSubmitForm)}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 max-h-[450px] overflow-y-auto"
     >
+      <ImageUpload
+        control={control}
+        name="profilePhoto"
+        setValue={(name: string, value: string | null) => {
+          setValue("profilePhoto", String(value));
+        }}
+      />
       <FormInput
         register={register}
         placeholder="First Name"

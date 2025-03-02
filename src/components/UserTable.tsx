@@ -9,6 +9,7 @@ import useUsers from "./useUsers";
 import { CustomButton } from "@/shared/CustomUIs";
 import { useDispatch } from "react-redux";
 import { clearStepState, setStepState } from "@/redux/slices/stepSlice";
+import moment from "moment";
 
 const UserTable = () => {
   const { isModalOpen, setIsModalOpen, onDeleteUser } = useUserForm();
@@ -26,6 +27,7 @@ const UserTable = () => {
     {
       title: "Date of Birth",
       dataIndex: "dob",
+      render: (value) => moment(value).format("YYYY-MM-DD"),
     },
     {
       title: "Gender",
@@ -55,6 +57,7 @@ const UserTable = () => {
                     dob: record.dob,
                     gender: record.gender,
                     occupation: record.occupation,
+                    profilePhoto: record.profilePhoto,
                   },
                   stepTwo: record.contact,
                   stepThree: record.address,

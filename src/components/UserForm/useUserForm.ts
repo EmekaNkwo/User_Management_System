@@ -42,6 +42,7 @@ export const useUserForm = () => {
       dob: userData.stepOne.dob,
       gender: userData.stepOne.gender,
       occupation: userData.stepOne.occupation,
+      profilePhoto: userData.stepOne.profilePhoto,
     };
 
     if (isEditMode) {

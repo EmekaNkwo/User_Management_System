@@ -1,4 +1,4 @@
-import { Modal, Steps } from "antd";
+import { Modal } from "antd";
 import React, { useEffect } from "react";
 import { useUserForm } from "./useUserForm";
 import StepOne from "./StepOne/StepOne";
@@ -62,7 +62,6 @@ const UserModal = ({ isModalOpen, setOpenModal }: IModalProps) => {
         },
       }}
     >
-      <Steps current={step} items={steps} />
       <div className="mt-5">{steps[step].content}</div>
     </Modal>
   );

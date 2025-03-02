@@ -2,6 +2,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useUserForm } from "./useUserForm";
 import { selectStepState } from "@/redux/slices/stepSlice";
 import { CustomButton } from "@/shared/CustomUIs";
+import Image from "next/image";
 
 const PreviewPage = ({ prevStep }: { prevStep: () => void }) => {
   const { isLoading, onCreateOrEditUserSubmit, isUpdateLoading, isEditMode } =
@@ -14,6 +15,13 @@ const PreviewPage = ({ prevStep }: { prevStep: () => void }) => {
         <h3 className="text-lg font-semibold">User Info</h3>
         <hr />
         <div className="flex flex-col gap-3 mt-3">
+          <Image
+            src={`data:image/jpeg;base64,${formData.stepOne.profilePhoto}`}
+            alt="profile"
+            width={100}
+            height={100}
+            className="rounded-full object-cover"
+          />
           <p>
             <strong>Name:</strong> {formData.stepOne.firstName}{" "}
             {formData.stepOne.lastName}
